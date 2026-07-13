@@ -3,6 +3,7 @@ package ng.ourChemo.data.repositories;
 import ng.ourChemo.data.models.Drug;
 
 public interface DrugRepository {
+
     long count();
 
     Drug save(Drug drug);

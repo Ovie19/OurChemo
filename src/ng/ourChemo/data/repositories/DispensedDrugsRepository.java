@@ -1,7 +1,20 @@
 package ng.ourChemo.data.repositories;
 
-import ng.ourChemo.data.models.User;
+import ng.ourChemo.data.models.DispensedDrugs;
 
 public interface DispensedDrugsRepository {
-    User save(User user);
+
+    long count();
+
+    DispensedDrugs save(DispensedDrugs dispensedDrugs);
+
+    DispensedDrugs findById(int id);
+
+    void deleteById(int id);
+
+    void delete(DispensedDrugs dispensedDrugs);
+
+    void deleteAll();
+
+    boolean existsById(int id);
 }
