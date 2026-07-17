@@ -17,4 +17,5 @@ public interface UserRepository {
 
     boolean existsById(int id);
 
+    User findByUserName(String username);
 }

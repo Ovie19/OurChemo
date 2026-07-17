@@ -7,8 +7,9 @@ import java.util.List;
 
 
 public class UserRepositoryImpl implements UserRepository {
-    private int count;
-    private final List<User> users = new ArrayList<>();
+
+    private static int count;
+    private static final List<User> users = new ArrayList<>();
 
     @Override
     public long count() {
@@ -64,5 +65,13 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean existsById(int id) {
         User user = findById(id);
         return user != null;
+    }
+
+    @Override
+    public User findByUserName(String username) {
+        for (User user : users)
+            if (user.getUsername().equals(username)) return user;
+
+        return null;
     }
 }

@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DrugRepositoryImpl implements DrugRepository {
+
     private int count;
-    private List<Drug> drugs = new ArrayList<>();
+    private final List<Drug> drugs = new ArrayList<>();
 
     @Override
     public long count() {

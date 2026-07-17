@@ -13,6 +13,7 @@ class UserRepositoryTest {
     @BeforeEach
     void setUp() {
         userRepository = new UserRepositoryImpl();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -74,7 +75,7 @@ class UserRepositoryTest {
         User userOne =  new User();
         userOne.setFullName("User One");
         userOne.setUsername("User_one");
-        User savedUserOne = userRepository.save(userOne);
+        userRepository.save(userOne);
 
         User userTwo =  new User();
         userTwo.setFullName("User Two");
@@ -100,7 +101,7 @@ class UserRepositoryTest {
         User userTwo =  new User();
         userTwo.setFullName("User Two");
         userTwo.setUsername("User_two");
-        User savedUsedTwo = userRepository.save(userTwo);
+        userRepository.save(userTwo);
 
         assertEquals(2, userRepository.count());
         userRepository.deleteById(savedUserOne.getId());
@@ -121,17 +122,17 @@ class UserRepositoryTest {
         User userOne =  new User();
         userOne.setFullName("User One");
         userOne.setUsername("User_one");
-        User savedUserOne = userRepository.save(userOne);
+        userRepository.save(userOne);
 
         User userTwo =  new User();
         userTwo.setFullName("User Two");
         userTwo.setUsername("User_two");
-        User savedUsedTwo = userRepository.save(userTwo);
+        userRepository.save(userTwo);
 
         User userThree =  new User();
         userThree.setFullName("User Three");
         userThree.setUsername("User_three");
-        User savedUserThree = userRepository.save(userThree);
+        userRepository.save(userThree);
 
         assertEquals(3, userRepository.count());
         userRepository.deleteAll();
