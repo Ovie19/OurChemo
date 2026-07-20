@@ -64,11 +64,18 @@ public class ChemistServicesImpl implements ChemistServices {
         if (foundDrug == null) throw new IllegalArgumentException("Drug not found!!!");
 
         mapToUpdatedDrug(updateDrugRequest, foundDrug);
+        drugRepository.save(foundDrug);
         return mapToUpdateDrugResponse(foundDrug);
     }
 
     @Override
     public DeleteDrugResponse deleteDrug(DeleteDrugRequest deleteDrugRequest) {
+        boolean isInvalidName = deleteDrugRequest.getName() == null || deleteDrugRequest.getName().isBlank();
+        if (isInvalidName) throw new IllegalArgumentException("Invalid drug name!!!");
+
+        boolean isInvalidBrand = deleteDrugRequest.getBrand() == null || deleteDrugRequest.getBrand().isBlank();
+        if (isInvalidBrand) throw new IllegalArgumentException("Invalid brand!!!");
+
         deleteDrugRequest.setName(deleteDrugRequest.getName().toLowerCase());
         deleteDrugRequest.setBrand(deleteDrugRequest.getBrand().toLowerCase());
 
