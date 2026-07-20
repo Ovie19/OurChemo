@@ -4,6 +4,7 @@ import ng.ourChemo.data.models.Drug;
 import ng.ourChemo.data.repositories.DrugRepository;
 import ng.ourChemo.data.repositories.DrugRepositoryImpl;
 import ng.ourChemo.dtos.request.AddDrugRequest;
+import ng.ourChemo.dtos.request.DeleteDrugRequest;
 import ng.ourChemo.dtos.request.UpdateDrugRequest;
 import ng.ourChemo.dtos.response.AddDrugResponse;
 import ng.ourChemo.dtos.response.UpdateDrugResponse;
@@ -37,18 +38,6 @@ class ChemistServicesTest {
         chemistServices.addDrug(addDrugRequest);
         assertEquals(1, drugRepository.count());
     }
-
-//    @Test
-//    public void addDrug_addSameDrugThrowsExceptionTest() {
-//        AddDrugRequest addDrugRequest = new AddDrugRequest();
-//        addDrugRequest.setName("Paracetamol");
-//        addDrugRequest.setBrand("Emzor");
-//        addDrugRequest.setPrice(new BigDecimal("500"));
-//        addDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
-//        chemistServices.addDrug(addDrugRequest);
-//
-//
-//    }
 
     @Test
     public void addDrug_nameIsNullThrowsExceptionTest() {
@@ -128,7 +117,7 @@ class ChemistServicesTest {
         addDrugRequest.setPrice(new BigDecimal("500"));
         addDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
         AddDrugResponse addDrugResponse = chemistServices.addDrug(addDrugRequest);
-        Drug drug = drugRepository.findByDrugName(addDrugResponse.getName());
+        Drug drug = drugRepository.findByDrugNameAndBrand(addDrugResponse.getName(), addDrugResponse.getBrand());
 
         UpdateDrugRequest updateDrugRequest = new UpdateDrugRequest();
         updateDrugRequest.setName(drug.getName());
@@ -136,7 +125,7 @@ class ChemistServicesTest {
         updateDrugRequest.setPrice(new BigDecimal("800"));
         updateDrugRequest.setExpiryDate(drug.getExpiryDate());
         UpdateDrugResponse updateDrugResponse = chemistServices.updateDrug(updateDrugRequest);
-        Drug updatedDrug = drugRepository.findByDrugName(updateDrugResponse.getName());
+        Drug updatedDrug = drugRepository.findByDrugNameAndBrand(updateDrugResponse.getName(), updateDrugResponse.getBrand());
         assertEquals(drug.getId(), updatedDrug.getId());
         assertEquals(new BigDecimal("800"), updatedDrug.getPrice());
     }
@@ -268,5 +257,70 @@ class ChemistServicesTest {
         updateDrugRequest.setPrice(new BigDecimal("500"));
         updateDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
         assertThrows(IllegalArgumentException.class, () -> chemistServices.updateDrug(updateDrugRequest));
+    }
+
+    @Test
+    public void addDrug_countIsOne_deleteDrug_countIsZeroTest() {
+        AddDrugRequest addDrugRequest = new AddDrugRequest();
+        addDrugRequest.setName("Paracetamol");
+        addDrugRequest.setBrand("Emzor");
+        addDrugRequest.setPrice(new BigDecimal("500"));
+        addDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
+        chemistServices.addDrug(addDrugRequest);
+        assertEquals(1, drugRepository.count());
+
+        DeleteDrugRequest deleteDrugRequest = new DeleteDrugRequest();
+        deleteDrugRequest.setName("Paracetamol");
+        deleteDrugRequest.setBrand("Emzor");
+        chemistServices.deleteDrug(deleteDrugRequest);
+        assertEquals(0, drugRepository.count());
+    }
+
+    @Test
+    public void deleteDrugWithWrongNameThrowsExceptionTest() {
+        AddDrugRequest addDrugRequest = new AddDrugRequest();
+        addDrugRequest.setName("Paracetamol");
+        addDrugRequest.setBrand("Emzor");
+        addDrugRequest.setPrice(new BigDecimal("500"));
+        addDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
+        chemistServices.addDrug(addDrugRequest);
+        assertEquals(1, drugRepository.count());
+
+        DeleteDrugRequest deleteDrugRequest = new DeleteDrugRequest();
+        deleteDrugRequest.setName("Parace");
+        deleteDrugRequest.setBrand("Emzor");
+        assertThrows(IllegalArgumentException.class, () -> chemistServices.deleteDrug(deleteDrugRequest));
+    }
+
+    @Test
+    public void deleteDrugWithWrongBrandThrowsExceptionTest() {
+        AddDrugRequest addDrugRequest = new AddDrugRequest();
+        addDrugRequest.setName("Paracetamol");
+        addDrugRequest.setBrand("Emzor");
+        addDrugRequest.setPrice(new BigDecimal("500"));
+        addDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
+        chemistServices.addDrug(addDrugRequest);
+        assertEquals(1, drugRepository.count());
+
+        DeleteDrugRequest deleteDrugRequest = new DeleteDrugRequest();
+        deleteDrugRequest.setName("Paracetamol");
+        deleteDrugRequest.setBrand("Emzar");
+        assertThrows(IllegalArgumentException.class, () -> chemistServices.deleteDrug(deleteDrugRequest));
+    }
+
+    @Test
+    public void deleteDrug_nameIsNullThrowsExceptionTest() {
+        AddDrugRequest addDrugRequest = new AddDrugRequest();
+        addDrugRequest.setName("Paracetamol");
+        addDrugRequest.setBrand("Emzor");
+        addDrugRequest.setPrice(new BigDecimal("500"));
+        addDrugRequest.setExpiryDate(LocalDate.of(2027, 5, 21));
+        chemistServices.addDrug(addDrugRequest);
+        assertEquals(1, drugRepository.count());
+
+        DeleteDrugRequest deleteDrugRequest = new DeleteDrugRequest();
+        deleteDrugRequest.setName(null);
+        deleteDrugRequest.setBrand("Emzor");
+        assertThrows(IllegalArgumentException.class, () -> chemistServices.deleteDrug(deleteDrugRequest));
     }
 }

@@ -16,6 +16,7 @@ class DrugRepositoryTest {
     @BeforeEach
     void setUp() {
         drugRepository = new DrugRepositoryImpl();
+        drugRepository.deleteAll();
     }
 
     @Test

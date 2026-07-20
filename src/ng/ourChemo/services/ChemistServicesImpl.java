@@ -58,7 +58,8 @@ public class ChemistServicesImpl implements ChemistServices {
 
         updateDrugRequest.setName(updateDrugRequest.getName().toLowerCase());
         updateDrugRequest.setBrand(updateDrugRequest.getBrand().toLowerCase());
-        Drug foundDrug = drugRepository.findByDrugName(updateDrugRequest.getName());
+        Drug foundDrug =
+            drugRepository.findByDrugNameAndBrand(updateDrugRequest.getName(), updateDrugRequest.getBrand());
 
         if (foundDrug == null) throw new IllegalArgumentException("Drug not found!!!");
 
@@ -68,6 +69,13 @@ public class ChemistServicesImpl implements ChemistServices {
 
     @Override
     public DeleteDrugResponse deleteDrug(DeleteDrugRequest deleteDrugRequest) {
+        deleteDrugRequest.setName(deleteDrugRequest.getName().toLowerCase());
+        deleteDrugRequest.setBrand(deleteDrugRequest.getBrand().toLowerCase());
+
+        Drug foundDrug = drugRepository.findByDrugNameAndBrand(deleteDrugRequest.getName(), deleteDrugRequest.getBrand());
+        if (foundDrug == null) throw new IllegalArgumentException("Drug not found!!!");
+
+        drugRepository.deleteById(foundDrug.getId());
         return null;
     }
 

@@ -67,10 +67,11 @@ public class DrugRepositoryImpl implements DrugRepository {
     }
 
     @Override
-    public Drug findByDrugName(String name) {
-        for (Drug drug : drugs)
-            if (drug.getName().equals(name))
-                return drug;
+    public Drug findByDrugNameAndBrand(String name, String brand) {
+        for (Drug drug : drugs) {
+            boolean isDrugFound = drug.getName().equals(name) && drug.getBrand().equals(brand);
+            if (isDrugFound) return drug;
+        }
         return null;
     }
 }

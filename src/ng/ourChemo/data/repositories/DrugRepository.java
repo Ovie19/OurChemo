@@ -18,5 +18,5 @@ public interface DrugRepository {
 
     boolean existsById(int id);
 
-    Drug findByDrugName(String name);
+    Drug findByDrugNameAndBrand(String name, String brand);
 }
