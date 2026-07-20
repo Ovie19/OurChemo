@@ -1,10 +1,11 @@
 package ng.ourChemo.utils;
 
+import ng.ourChemo.data.models.Drug;
 import ng.ourChemo.data.models.User;
+import ng.ourChemo.dtos.request.AddDrugRequest;
 import ng.ourChemo.dtos.request.RegisterUserRequest;
-import ng.ourChemo.dtos.response.LoginResponse;
-import ng.ourChemo.dtos.response.LogoutResponse;
-import ng.ourChemo.dtos.response.RegisterUserResponse;
+import ng.ourChemo.dtos.request.UpdateDrugRequest;
+import ng.ourChemo.dtos.response.*;
 
 public class Mapper {
     public static User mapUserRequestToUser(RegisterUserRequest registerUserRequest) {
@@ -33,5 +34,39 @@ public class Mapper {
         LogoutResponse logoutResponse = new LogoutResponse();
         logoutResponse.setLoggedIn(user.isLoggedIn());
         return logoutResponse;
+    }
+
+    public static Drug mapToDrug(AddDrugRequest addDrugRequest) {
+        Drug drug = new Drug();
+        drug.setName(addDrugRequest.getName());
+        drug.setBrand(addDrugRequest.getBrand());
+        drug.setPrice(addDrugRequest.getPrice());
+        drug.setExpiryDate(addDrugRequest.getExpiryDate());
+        return drug;
+    }
+
+    public static AddDrugResponse mapToAddDrugResponse(Drug drug) {
+        AddDrugResponse addDrugResponse = new AddDrugResponse();
+        addDrugResponse.setName(drug.getName());
+        addDrugResponse.setBrand(drug.getBrand());
+        addDrugResponse.setPrice(drug.getPrice());
+        addDrugResponse.setExpiryDate(drug.getExpiryDate());
+        return addDrugResponse;
+    }
+
+    public static void mapToUpdatedDrug(UpdateDrugRequest updateDrugRequest, Drug drug) {
+        drug.setName(updateDrugRequest.getName());
+        drug.setBrand(updateDrugRequest.getBrand());
+        drug.setPrice(updateDrugRequest.getPrice());
+        drug.setExpiryDate(updateDrugRequest.getExpiryDate());
+    }
+
+    public static UpdateDrugResponse mapToUpdateDrugResponse(Drug drug) {
+        UpdateDrugResponse updateDrugResponse = new UpdateDrugResponse();
+        updateDrugResponse.setName(drug.getName());
+        updateDrugResponse.setBrand(drug.getBrand());
+        updateDrugResponse.setPrice(drug.getPrice());
+        updateDrugResponse.setExpiryDate(drug.getExpiryDate());
+        return updateDrugResponse;
     }
 }

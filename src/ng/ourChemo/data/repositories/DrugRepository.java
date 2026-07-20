@@ -17,4 +17,6 @@ public interface DrugRepository {
     void deleteAll();
 
     boolean existsById(int id);
+
+    Drug findByDrugName(String name);
 }

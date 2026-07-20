@@ -8,7 +8,7 @@ import java.util.List;
 public class DrugRepositoryImpl implements DrugRepository {
 
     private int count;
-    private final List<Drug> drugs = new ArrayList<>();
+    private static final List<Drug> drugs = new ArrayList<>();
 
     @Override
     public long count() {
@@ -64,5 +64,13 @@ public class DrugRepositoryImpl implements DrugRepository {
     public boolean existsById(int id) {
         Drug drug = findById(id);
         return drug != null;
+    }
+
+    @Override
+    public Drug findByDrugName(String name) {
+        for (Drug drug : drugs)
+            if (drug.getName().equals(name))
+                return drug;
+        return null;
     }
 }
